@@ -100,7 +100,7 @@
 			function getUserWithMostCheckouts(rentals) {
 				var counts = {};
 				var rentalsAsArrays = splitRentalString(rentals);
-				for (var i = 0; i < rentalsAsArrays.length; i++){
+//				for (var i = 0; i < rentalsAsArrays.length; i++){
 					debugger;
 					var userNum = rentalsAsArrays[i][0];
 					
@@ -138,8 +138,10 @@
 			document.getElementById('most-checkouts').innerHTML = maxUser;
 //
 //			//Which month has the most checkouts?
-            var maxMonth = getMonthWithMostCheckouts(rentalsArray);
-			document.getElementById('most-month').innerHTML = maxMonth;
+//            var maxMonth = getMonthWithMostCheckouts(rentalsArray);
+//			document.getElementById('most-month').innerHTML = maxMonth;
+        
+//        console.log(maxMonth);
 		}
 	</script>
 </body>

@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Movie Rental Homework</title>
+
+    <style>
+        .container-top {
+            margin-top: 20px;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container container-top">
+        <p>Your competitor, MovieCo, has released even more data about their rentals in 2014! Now you have the information about which movies were the most popular.</p>
+        <p>There's three more questions below for you to answer and become the #1 movie company in the world.</p>
+        <!-- <p>*Evil Laugh*</p> -->
+    </div>
+    <div class="container">
+        <table>
+            <tr>
+                <td>The most checked-out movie of 2014 was</td>
+                <td><span id="most-movie"></span></td>
+            </tr>
+            <tr>
+                <td>The least checked-out movie of 2014 was</td>
+                <td><span id="least-movie"></span></td>
+            </tr>
+            <tr>
+                <td>The favorite movie (most checkouts) for the user with the most checkouts in 2014 was</td>
+                <td><span id="favorite-movie"></span></td>
+            </tr>
+        </table>
+    </div>
+    <script>
+        /********
+                                                        		 This is boilerplate code to retrieve the movies and rental data from the server.
+                                                        		 Don't worry about how it works just yet (although you're welcome to read it).
+                                                        		 Head on down to "userFunction" below, which is where you'll write your code.
+                                                        		********/
+        function loadDoc(uri, callback) {
+            var xmlhttp = new XMLHttpRequest();
+            xmlhttp.onreadystatechange = function () {
+                if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
+                    callback.call(this, xmlhttp.responseText);
+                }
+            };
+            xmlhttp.open("GET", uri, true);
+            xmlhttp.send();
+        }
+        var rentalsArray, moviesArray, loadedCount = 0;
+        var loadedRentals = function (rentalsJSON) {
+            rentalsArray = JSON.parse(rentalsJSON);
+            loadedCount += 1;
+            if (loadedCount == 2) {
+                userFunction();
+            }
+        };
+        var loadedMovies = function (moviesJSON) {
+            moviesArray = JSON.parse(moviesJSON);
+            loadedCount += 1;
+            if (loadedCount == 2) {
+                userFunction();
+            }
+        };
+        loadDoc("https://aerekos.herokuapp.com/getmoviesfile", loadedMovies);
+        loadDoc("https://aerekos.herokuapp.com/getrentalsfile", loadedRentals);
+    </script>
+    <script>
+        function userFunction() {
+            function splitUserRow(stringUser) {
+                return stringUser.split(" ");
+            }
+
+            function splitRentalString(rentalAsString) {
+                var asArrays = [];
+                for (var i = 0; i < rentalAsString.length; i++) {
+                    asArrays.push(splitUserRow(rentalAsString[i]));
+                }
+                return asArrays;
+            }
+
+            function getKeyWithMaxValue(obj) {
+                var maxSoFar = 0;
+                var maxKeySoFar = "";
+                for (var key in obj) {
+                    if (obj[key] > maxSoFar) {
+                        maxSoFar = obj[key];
+                        maxKeySoFar = key;
+                    }
+                }
+                return maxKeySoFar;
+            }
+
+            function getRentalWithMostCheckouts(rentals) {
+                var counts = {};
+                var rentalsAsArrays = splitRentalString(rentals);
+                for (var i = 0; i < rentalsAsArrays.length; i++) {
+                    var rentalNum = rentalsAsArrays[i][1];
+
+                    if (counts[rentalNum] == undefined) {
+                        counts[rentalNum] = 1;
+                    } else {
+                        counts[rentalNum] += 1;
+                    }
+                }
+                return moviesArray[getKeyWithMaxValue(counts) - 1];
+            }
+            //                        console.log(rentalsAsArrays[i][1]);
+
+            function getUserWithMostCheckouts(rentals) {
+                var counts = {};
+                var rentalsAsArrays = splitRentalString(rentals);
+                for (var i = 0; i < rentalsAsArrays.length; i++) {
+                    var userNum = rentalsAsArrays[i][0];
+
+                    if (counts[userNum] == undefined) {
+                        counts[userNum] = 1;
+                    } else {
+                        counts[userNum] += 1;
+                    }
+                }
+                return getKeyWithMaxValue(counts);
+            }
+
+
+            function getKeyWithMinValue(obj) {
+                var minSoFar = Infinity;
+                var minKeySoFar = "";
+                for (var key in obj) {
+                    if (obj[key] < minSoFar) {
+                        minSoFar = obj[key];
+                        minKeySoFar = key;
+                    }
+                }
+                return minKeySoFar;
+            }
+
+
+            function getRentalWithLeastCheckouts(rentals) {
+                var counts = {};
+                var rentalsAsArrays = splitRentalString(rentals);
+                for (var i = 0; i < rentalsAsArrays.length; i++) {
+                    var rentalNum = rentalsAsArrays[i][1];
+
+                    if (counts[rentalNum] == undefined) {
+                        counts[rentalNum] = 1;
+                    } else {
+                        counts[rentalNum] += 1;
+                    }
+                }
+                return moviesArray[getKeyWithMinValue(counts) - 1];
+            }
+
+            function getUserInfo(ourUser, bigArray) {
+                var userMovies = {};
+                var rentalsAsArrays = splitRentalString(bigArray);
+                for (var i = 0; i < rentalsAsArrays.length; i++) {
+                    var userNum = rentalsAsArrays[i][0];
+
+                    if (ourUser == userNum) {
+                        userMovies[rentalsAsArrays[i][1]] = 1;
+                    } 
+                    
+                    if (userMovies[rentalsAsArrays[i][1]] == undefined) {
+                        userMovies[rentalsAsArrays[i][1]] = 1;
+                    } else {
+                        userMovies[rentalsAsArrays[i][1]] += 1;
+                    }
+                }
+                return getKeyWithMaxValue(userMovies);
+            }
+
+//            
+//            function userMovie() {
+//                    if userMovie[moviesArr[i][237] += 1;
+//                    }
+//                }
+//                return getKeyWithMaxValue(userMovies);
+//            }
+//            }
+//        return correct;
+//        }
+
+
+            /*
+            	Again, here is where you'll write your code.
+
+            	rentalsArray is in the same format as yesterday.
+
+            	moviesArray is in a similar format, with each line matching
+            	"MovieID MovieName"
+
+            	For Example,
+            	"46 Gladiator"
+
+            	Which means that movie ID 46 is the 2000 action/drama starring Russel Crowe.
+
+            	Your job is to answer the questions:
+            	Which movie was the most checked-out movie of 2014?
+            	Which movie was the least checked-out movie of 2014?
+            	For the user with the most checkouts, which movie did they checkout the most?
+            **/
+
+            //Let's see what's inside...
+
+            /*
+            	A hint: Think about how to index your movie names so that it's easy to look up which movie has which id.
+            */
+
+
+            var maxRental = getRentalWithMostCheckouts(rentalsArray);
+
+
+            document.getElementById('most-movie').innerHTML = maxRental;
+
+
+
+            var minRental = getRentalWithLeastCheckouts(rentalsArray);
+
+
+            document.getElementById('least-movie').innerHTML = minRental;
+            //                                    console.log(minRental);
+
+            var maxUser = getUserWithMostCheckouts(rentalsArray);
+            console.log(maxUser);
+            var favMovie = getUserInfo(maxUser, rentalsArray);
+            console.log(favMovie);
+
+
+            //                        //For the user with the most checkouts, which movie did they checkout the most?
+            document.getElementById('favorite-movie').innerHTML = favMovie;
+        }
+    </script>
+</body>
+
+</html>
