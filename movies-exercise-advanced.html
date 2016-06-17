@@ -36,10 +36,10 @@
     </div>
     <script>
         /********
-                                                        		 This is boilerplate code to retrieve the movies and rental data from the server.
-                                                        		 Don't worry about how it works just yet (although you're welcome to read it).
-                                                        		 Head on down to "userFunction" below, which is where you'll write your code.
-                                                        		********/
+                                                                		 This is boilerplate code to retrieve the movies and rental data from the server.
+                                                                		 Don't worry about how it works just yet (although you're welcome to read it).
+                                                                		 Head on down to "userFunction" below, which is where you'll write your code.
+                                                                		********/
         function loadDoc(uri, callback) {
             var xmlhttp = new XMLHttpRequest();
             xmlhttp.onreadystatechange = function () {
@@ -108,7 +108,7 @@
                 }
                 return moviesArray[getKeyWithMaxValue(counts) - 1];
             }
-            //                        console.log(rentalsAsArrays[i][1]);
+            console.log(rentalsAsArrays[i][1]);
 
             function getUserWithMostCheckouts(rentals) {
                 var counts = {};
@@ -154,6 +154,9 @@
                 return moviesArray[getKeyWithMinValue(counts) - 1];
             }
 
+
+
+
             function getUserInfo(ourUser, bigArray) {
                 var userMovies = {};
                 var rentalsAsArrays = splitRentalString(bigArray);
@@ -162,8 +165,8 @@
 
                     if (ourUser == userNum) {
                         userMovies[rentalsAsArrays[i][1]] = 1;
-                    } 
-                    
+                    }
+
                     if (userMovies[rentalsAsArrays[i][1]] == undefined) {
                         userMovies[rentalsAsArrays[i][1]] = 1;
                     } else {
@@ -172,17 +175,17 @@
                 }
                 return getKeyWithMaxValue(userMovies);
             }
-console.log(moviesArr[i][237]);
-//            
-//            function userMovie() {
-//                    if userMovie[moviesArr[i][237] += 1;
-//                    }
-//                }
-//                return getKeyWithMaxValue(userMovies);
-//            }
-//            }
-//        return correct;
-//        }
+            console.log(moviesArr[i][237]);
+            //            
+            //            function userMovie() {
+            //                    if userMovie[moviesArr[i][237] += 1;
+            //                    }
+            //                }
+            //                return getKeyWithMaxValue(userMovies);
+            //            }
+            //            }
+            //        return correct;
+            //        }
 
 
             /*
@@ -212,26 +215,21 @@ console.log(moviesArr[i][237]);
 
 
             var maxRental = getRentalWithMostCheckouts(rentalsArray);
-
-
             document.getElementById('most-movie').innerHTML = maxRental;
 
 
-
             var minRental = getRentalWithLeastCheckouts(rentalsArray);
-
-
             document.getElementById('least-movie').innerHTML = minRental;
             //                                    console.log(minRental);
 
-            var maxUser = getUserWithMostCheckouts(rentalsArray);
-            console.log(maxUser);
-            var favMovie = getUserInfo(maxUser, rentalsArray);
-            console.log(favMovie);
+//            var maxUser = getUserWithMostCheckouts(rentalsArray);
+//            console.log(maxUser);
+//            var favMovie = getUserInfo(maxUser, rentalsArray);
+//            console.log(favMovie);
 
 
             //                        //For the user with the most checkouts, which movie did they checkout the most?
-            document.getElementById('favorite-movie').innerHTML = favMovie;
+//            document.getElementById('favorite-movie').innerHTML = favMovie;
         }
     </script>
 </body>
